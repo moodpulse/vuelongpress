@@ -4,7 +4,17 @@ let timer = null;
 export default {
     name: 'longpress-button',
 
-    props: ['value', 'onConfirm', 'duration', 'pressingText', 'actionText', 'confirmTime'],
+    props: {
+        value: {},
+        onConfirm: {},
+        duration: {},
+        pressingText: {},
+        actionText: {},
+        confirmTime: {
+            type: Number,
+            default: 1000,
+        },
+    },
 
     created() {
         document.addEventListener('mouseup', () => this.cancel());
@@ -45,7 +55,7 @@ export default {
                             this.onConfirm(this.value || null);
 
                         this.reset();
-                    }, parseInt(this.confirmTime || "1000"));
+                    }, this.confirmTime);
 
                     return;
                 }
