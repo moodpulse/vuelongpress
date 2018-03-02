@@ -7,7 +7,10 @@ export default {
     props: {
         value: {},
         onConfirm: {},
-        duration: {},
+        duration: {
+            type: Number,
+            default: 1000,
+        },
         pressingText: {},
         actionText: {},
         confirmTime: {
@@ -27,7 +30,6 @@ export default {
     data() {
         return {
             status: 'default',
-            counter: 0
         }
     },
 
@@ -43,25 +45,17 @@ export default {
 
         countAndConfirm() {
             timer = setTimeout(() => {
-                this.counter++;
+                this.status = 'executing';
 
-                if (this.counter >= this.duration) {
-                    this.status = 'executing';
+                clearTimeout(timer);
 
-                    clearTimeout(timer);
+                setTimeout(_ => {
+                    if (this.onConfirm)
+                        this.onConfirm(this.value || null);
 
-                    setTimeout(_ => {
-                        if (this.onConfirm)
-                            this.onConfirm(this.value || null);
-
-                        this.reset();
-                    }, this.confirmTime);
-
-                    return;
-                }
-
-                this.countAndConfirm();
-            }, 1000);
+                    this.reset();
+                }, this.confirmTime);
+            }, this.duration);
         },
 
         reset() {
@@ -73,8 +67,6 @@ export default {
             if (this.status === 'executing')
                 return;
 
-            this.counter = 0;
-
             clearTimeout(timer);
 
             this.status = 'default';
@@ -84,10 +76,7 @@ export default {
     computed: {
         countingPressingText() {
             const pressingText = this.pressingText || '';
-            return pressingText
-                .replace(/\{\$counter\}/gi, this.counter)
-                .replace(/\{\$rcounter\}/gi, this.duration - this.counter)
-                .replace(/\{\$duration\}/gi, this.duration);
+            return pressingText;
         }
     }
 }
@@ -105,7 +94,7 @@ export default {
             <span v-if="status === 'counting'">{{ countingPressingText || 'Keep pressing' }}</span>
             <span v-if="status === 'executing'">{{ actionText || 'Please wait...' }}</span>
         </div>
-        <span class="progress-bar" :style="'animation-duration:'+duration+'s'"></span>
+        <span class="progress-bar" :style="'animation-duration:'+duration+'ms'"></span>
     </div>
 </template>
 
