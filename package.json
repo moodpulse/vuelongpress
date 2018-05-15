@@ -1,6 +1,6 @@
 {
   "name": "vue-longpress",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "scripts": {
     "build": "rm -rf ./dist && webpack --config ./webpack.config.js && webpack --config webpack.config.min.js",
     "release": "bash ./release.sh"
@@ -9,7 +9,7 @@
   "main": "dist/vue-longpress.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/javisperez/vue-longpress.git"
+    "url": "git+https://github.com/moodpulse/vuelongpress.git"
   },
   "keywords": [
     "vue",
